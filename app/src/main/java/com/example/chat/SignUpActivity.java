@@ -20,26 +20,23 @@ import com.google.firebase.database.FirebaseDatabase;
 public class SignUpActivity extends AppCompatActivity {
 
     ActivitySignUpBinding binding;
-
-    private FirebaseAuth auth;
-
     FirebaseDatabase database;
-
     ProgressDialog progressDialog;
+    private FirebaseAuth auth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding=ActivitySignUpBinding.inflate(getLayoutInflater());
+        binding = ActivitySignUpBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         getSupportActionBar().hide();
 
-        auth=FirebaseAuth.getInstance();
-        database=FirebaseDatabase.getInstance();
+        auth = FirebaseAuth.getInstance();
+        database = FirebaseDatabase.getInstance();
 
 
-        progressDialog=new ProgressDialog(SignUpActivity.this);
+        progressDialog = new ProgressDialog(SignUpActivity.this);
         progressDialog.setTitle("Creating Account");
         progressDialog.setMessage("We're creating your account");
 
@@ -47,43 +44,41 @@ public class SignUpActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-              progressDialog.show();
+                progressDialog.show();
 
                 auth.createUserWithEmailAndPassword
                         (binding.etEmail.getText().toString(),
-                        binding.etPassword.getText().toString())
+                                binding.etPassword.getText().toString())
                         .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
 
-                        progressDialog.dismiss();
+                                progressDialog.dismiss();
 
-                        if (task.isSuccessful()){
-                            Users users=new Users(binding.etUserName.getText().toString(),
-                                    binding.etEmail.getText().toString(),
-                                    binding.etPassword.getText().toString());
+                                if (task.isSuccessful()) {
+                                    Users users = new Users(binding.etUserName.getText().toString(),
+                                            binding.etEmail.getText().toString(),
+                                            binding.etPassword.getText().toString());
 
-                            String id=task.getResult().getUser().getUid();
+                                    String id = task.getResult().getUser().getUid();
 
-                            database.getReference().child("Users").child(id).setValue(users);
-
-
-                            Toast.makeText(SignUpActivity.this,"User Created Successfully",Toast.LENGTH_SHORT).show();
-
-                        }else{
-                            Toast.makeText(SignUpActivity.this,task.getException().getMessage(),Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
+                                    database.getReference().child("Users").child(id).setValue(users);
 
 
+                                    Toast.makeText(SignUpActivity.this, "User Created Successfully", Toast.LENGTH_SHORT).show();
+
+                                } else {
+                                    Toast.makeText(SignUpActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
             }
         });
 
         binding.tvAlreadyAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent=new Intent(SignUpActivity.this,SignInActivity.class);
+                Intent intent = new Intent(SignUpActivity.this, SignInActivity.class);
                 startActivity(intent);
 
             }

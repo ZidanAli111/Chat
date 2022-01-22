@@ -17,22 +17,22 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class SignInActivity extends AppCompatActivity {
 
-ActivitySignInBinding binding;
-ProgressDialog progressDialog;
+    ActivitySignInBinding binding;
+    ProgressDialog progressDialog;
 
-FirebaseAuth auth;
+    FirebaseAuth auth;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding=ActivitySignInBinding.inflate(getLayoutInflater());
+        binding = ActivitySignInBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-     getSupportActionBar().hide();
+        getSupportActionBar().hide();
 
-        auth=FirebaseAuth.getInstance();
+        auth = FirebaseAuth.getInstance();
 
-        progressDialog=new ProgressDialog(SignInActivity.this);
+        progressDialog = new ProgressDialog(SignInActivity.this);
         progressDialog.setTitle("Login");
         progressDialog.setMessage("Login to  your account");
 
@@ -42,19 +42,18 @@ FirebaseAuth auth;
 
                 progressDialog.show();
 
-                auth.signInWithEmailAndPassword(binding.etEmail.getText().toString(),binding.etPassword.getText().toString())
+                auth.signInWithEmailAndPassword(binding.etEmail.getText().toString(), binding.etPassword.getText().toString())
                         .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
 
                                 progressDialog.dismiss();
 
-                                if (task.isSuccessful())
-                                {
-                                    Intent intent=new Intent(SignInActivity.this,MainActivity.class);
+                                if (task.isSuccessful()) {
+                                    Intent intent = new Intent(SignInActivity.this, MainActivity.class);
                                     startActivity(intent);
-                                }else{
-                                    Toast.makeText(SignInActivity.this,task.getException().getMessage(),Toast.LENGTH_SHORT).show();
+                                } else {
+                                    Toast.makeText(SignInActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                                 }
                             }
                         });
@@ -64,15 +63,14 @@ FirebaseAuth auth;
         binding.tvClickSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent=new Intent(SignInActivity.this,SignUpActivity.class);
+                Intent intent = new Intent(SignInActivity.this, SignUpActivity.class);
                 startActivity(intent);
 
             }
         });
 
-        if (auth.getCurrentUser()!=null)
-        {
-            Intent intent=new Intent(SignInActivity.this,MainActivity.class);
+        if (auth.getCurrentUser() != null) {
+            Intent intent = new Intent(SignInActivity.this, MainActivity.class);
             startActivity(intent);
 
         }
