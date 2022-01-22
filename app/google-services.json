@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "643307600532",
+    "project_id": "neat-roots-whatsapp-79475",
+    "storage_bucket": "neat-roots-whatsapp-79475.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:643307600532:android:89be5693cb8c84538e5281",
+        "android_client_info": {
+          "package_name": "com.example.chat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "643307600532-mpjlk8ef6n9ol9533u7488f1rn56u7fb.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.chat",
+            "certificate_hash": "05354eeca6fb8f7b6408aca8fd5da547d7899980"
+          }
+        },
+        {
+          "client_id": "643307600532-tlo843nj2ug884mnjen61fch27vhh5jl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDgW-FqcceQsWG5cB7QMS4umVNMBpmzhjM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "643307600532-tlo843nj2ug884mnjen61fch27vhh5jl.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
