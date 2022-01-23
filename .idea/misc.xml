@@ -3,6 +3,8 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Chat/app/src/main/res/drawable/bg_receiver.xml" value="0.2703125" />
+        <entry key="..\:/Chat/app/src/main/res/drawable/bg_sender.xml" value="0.2703125" />
         <entry key="..\:/Chat/app/src/main/res/drawable/bt_et_message.xml" value="0.2703125" />
         <entry key="..\:/Chat/app/src/main/res/drawable/ic_facebook.xml" value="0.2703125" />
         <entry key="..\:/Chat/app/src/main/res/drawable/ic_fbicon.xml" value="0.2703125" />
@@ -16,6 +18,8 @@
         <entry key="..\:/Chat/app/src/main/res/layout/activity_sign_in.xml" value="0.25416666666666665" />
         <entry key="..\:/Chat/app/src/main/res/layout/activity_sign_up.xml" value="0.264" />
         <entry key="..\:/Chat/app/src/main/res/layout/fragment_chats.xml" value="0.176" />
+        <entry key="..\:/Chat/app/src/main/res/layout/sample_receiver.xml" value="0.264" />
+        <entry key="..\:/Chat/app/src/main/res/layout/sample_sender.xml" value="0.25416666666666665" />
         <entry key="..\:/Chat/app/src/main/res/layout/sample_show_user.xml" value="0.1" />
         <entry key="..\:/Chat/app/src/main/res/menu/menu.xml" value="0.25416666666666665" />
       </map>
