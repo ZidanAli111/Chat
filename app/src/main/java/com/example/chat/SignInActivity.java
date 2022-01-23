@@ -1,8 +1,5 @@
 package com.example.chat;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,6 +7,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.chat.Models.Users;
 import com.example.chat.databinding.ActivitySignInBinding;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -24,6 +25,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class SignInActivity extends AppCompatActivity {
 
@@ -31,16 +33,19 @@ public class SignInActivity extends AppCompatActivity {
     ProgressDialog progressDialog;
 
     FirebaseAuth auth;
-GoogleSignInClient mGoogleSignInClient;
+    GoogleSignInClient mGoogleSignInClient;
+    FirebaseDatabase database;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivitySignInBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
         getSupportActionBar().hide();
 
         auth = FirebaseAuth.getInstance();
+        database = FirebaseDatabase.getInstance();
 
         progressDialog = new ProgressDialog(SignInActivity.this);
         progressDialog.setTitle("Login");
@@ -49,7 +54,7 @@ GoogleSignInClient mGoogleSignInClient;
 
         // Configure Google Sign In
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestIdToken("643307600532-tlo843nj2ug884mnjen61fch27vhh5jl.apps.googleusercontent.com")
                 .requestEmail()
                 .build();
 
@@ -103,7 +108,7 @@ GoogleSignInClient mGoogleSignInClient;
 
     }
 
-    int RC_SIGN_IN=65;
+    int RC_SIGN_IN = 65;
 
     private void signIn() {
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
@@ -128,6 +133,7 @@ GoogleSignInClient mGoogleSignInClient;
             }
         }
     }
+
     private void firebaseAuthWithGoogle(String idToken) {
         AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
         auth.signInWithCredential(credential)
@@ -139,16 +145,22 @@ GoogleSignInClient mGoogleSignInClient;
                             Log.d("TAG", "signInWithCredential:success");
                             FirebaseUser user = auth.getCurrentUser();
 
+                            Users users = new Users();
+                            users.setUserId(user.getUid());
+                            users.setUserName(user.getDisplayName());
+                            users.setProfilePic(user.getPhotoUrl().toString());
+                            database.getReference().child("Users").child(user.getUid()).setValue(users);
 
-                            Intent intent=new Intent(SignInActivity.this,MainActivity.class);
+
+                            Intent intent = new Intent(SignInActivity.this, MainActivity.class);
                             startActivity(intent);
-                            Toast.makeText(SignInActivity.this,"Sign in with Google",Toast.LENGTH_SHORT).show();
-                           // updateUI(user);
+                            Toast.makeText(SignInActivity.this, "Sign in with Google", Toast.LENGTH_SHORT).show();
+                            // updateUI(user);
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w("TAG", "signInWithCredential:failure", task.getException());
-                            Toast.makeText(SignInActivity.this,task.getException().getMessage(),Toast.LENGTH_SHORT).show();
-                            Snackbar.make(binding.getRoot(),"Authentication Failed.",Snackbar.LENGTH_SHORT).show();
+                            Toast.makeText(SignInActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                            Snackbar.make(binding.getRoot(), "Authentication Failed.", Snackbar.LENGTH_SHORT).show();
                             //updateUI(null);
                         }
                     }
