@@ -43,7 +43,7 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
 
         Picasso.get()
                 .load(users.getProfilePic())
-                .placeholder(R.drawable.userProfile)
+                .placeholder(R.drawable.userprofileimg)
                 .into(holder.image);
 
 
@@ -54,7 +54,8 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
 
     @Override
     public int getItemCount() {
-        return 0;
+
+        return list.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
