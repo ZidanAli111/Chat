@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
@@ -12,7 +13,10 @@ import com.example.chat.Models.MessageModel;
 import com.example.chat.databinding.ActivityGroupChatBinding;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -50,11 +54,32 @@ public class GroupChatActivity extends AppCompatActivity {
         binding.chatRecyclerView.setLayoutManager(layoutManager);
 
 
+        database.getReference().child("Group Chat")
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                        messageModels.clear();
+                        for (DataSnapshot dataSnapshot:snapshot.getChildren())
+                        {
+                            MessageModel model=dataSnapshot.getValue(MessageModel.class);
+                            messageModels.add(model);
+
+                        }
+                        adapter.notifyDataSetChanged();
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+
         binding.send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final String message=binding.etMessage.getText().toString();
-                final MessageModel model=new MessageModel(senderId,message);
+                final String message = binding.etMessage.getText().toString();
+                final MessageModel model = new MessageModel(senderId, message);
                 model.setTimestamp(new Date().getTime());
 
                 binding.etMessage.setText("");
@@ -70,7 +95,6 @@ public class GroupChatActivity extends AppCompatActivity {
 
             }
         });
-
 
 
     }
