@@ -10,19 +10,22 @@
     android:layout_marginRight="7dp"
     android:background="@drawable/bg_receiver"
     android:maxWidth="310dp"
-    android:maxHeight="400dp"
-    android:minHeight="30dp">
+    android:layout_marginTop="4dp"
+    android:maxHeight="400dp">
 
 
     <TextView
         android:id="@+id/receiverText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
+
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="3dp"
         android:inputType="textLongMessage|textMultiLine"
         android:maxWidth="270dp"
         android:minWidth="50dp"
-        android:text="TextView"
+        android:text="he i am the sigma gaming . how are you my friend, i am good"
         app:layout_constraintBottom_toTopOf="@+id/receiverTime"
         app:layout_constraintStart_toStartOf="@+id/guideline2"
         app:layout_constraintTop_toTopOf="parent"
@@ -36,6 +39,7 @@
         android:layout_marginRight="4dp"
         android:layout_marginBottom="3dp"
         android:text="10:16 pm"
+        android:textSize="10sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
