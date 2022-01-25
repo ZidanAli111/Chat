@@ -5,6 +5,8 @@ public class MessageModel {
     String uId;
     String message;
     Long timestamp;
+    String messageId;
+
 
     public MessageModel(String uId, String message, Long timestamp) {
         this.uId = uId;
@@ -18,6 +20,14 @@ public class MessageModel {
     }
 
     public MessageModel() {
+    }
+
+    public String getMessageId() {
+        return messageId;
+    }
+
+    public void setMessageId(String messageId) {
+        this.messageId = messageId;
     }
 
     public String getuId() {

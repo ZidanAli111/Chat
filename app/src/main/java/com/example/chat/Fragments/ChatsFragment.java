@@ -15,6 +15,7 @@ import com.example.chat.Adapters.UsersAdapter;
 import com.example.chat.Models.Users;
 import com.example.chat.R;
 import com.example.chat.databinding.FragmentChatsBinding;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
@@ -57,11 +58,12 @@ public class ChatsFragment extends Fragment {
 
                 list.clear();
 
-                for(DataSnapshot dataSnapshot:snapshot.getChildren())
-                {
-                    Users users=dataSnapshot.getValue(Users.class);
-                   users.setUserId(dataSnapshot.getKey());
-                    list.add(users);
+                for(DataSnapshot dataSnapshot:snapshot.getChildren()) {
+                    Users users = dataSnapshot.getValue(Users.class);
+                    users.setUserId(dataSnapshot.getKey());
+                    if (!users.getUserId().equals(FirebaseAuth.getInstance().getUid())) {
+                        list.add(users);
+                    }
                 }
                 adapter.notifyDataSetChanged();
             }
