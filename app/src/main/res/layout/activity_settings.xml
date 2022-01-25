@@ -14,8 +14,8 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="10dp"
-        app:tint="@color/white"
-        android:src="@drawable/ic_leftarrow" />
+        android:src="@drawable/ic_leftarrow"
+        app:tint="@color/white" />
 
     <LinearLayout
         android:id="@+id/linear"
@@ -28,15 +28,15 @@
         android:orientation="vertical">
 
         <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/profile_image"
+            android:id="@+id/profileImage"
             android:layout_width="120dp"
             android:layout_height="120dp"
             android:layout_marginLeft="10dp"
-            app:civ_border_color="@color/white"
-            app:civ_border_width="2dp"
             android:layout_marginTop="10dp"
+            android:layout_marginStart="10dp"
             android:src="@drawable/userprofileimg"
-            />
+            app:civ_border_color="@color/white"
+            app:civ_border_width="2dp" />
 
         <ImageView
             android:id="@+id/plus"
@@ -99,6 +99,7 @@
         </LinearLayout>
 
         <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/saveButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="right"

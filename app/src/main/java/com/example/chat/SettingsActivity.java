@@ -1,14 +1,14 @@
 package com.example.chat;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.chat.Models.Users;
 import com.example.chat.databinding.ActivitySettingsBinding;
@@ -23,6 +23,8 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
+import java.util.HashMap;
+
 public class SettingsActivity extends AppCompatActivity {
 
     ActivitySettingsBinding binding;
@@ -34,35 +36,55 @@ public class SettingsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding=ActivitySettingsBinding.inflate(getLayoutInflater());
+        binding = ActivitySettingsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         getSupportActionBar().hide();
 
 
-        storage=FirebaseStorage.getInstance();
-        auth=FirebaseAuth.getInstance();
-        database=FirebaseDatabase.getInstance();
+        storage = FirebaseStorage.getInstance();
+        auth = FirebaseAuth.getInstance();
+        database = FirebaseDatabase.getInstance();
 
         binding.backArrow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent =new Intent(SettingsActivity.this,MainActivity.class);
+                Intent intent = new Intent(SettingsActivity.this, MainActivity.class);
                 startActivity(intent);
             }
         });
+        binding.saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
+                String status=binding.etStatus.getText().toString();
+                String username=binding.etUsersName.getText().toString();
+                HashMap<String,Object>obj=new HashMap<>();
 
-        database.getReference().child("Users".concat(FirebaseAuth.getInstance().getUid()))
+                obj.put("userName",username);
+                obj.put("status",status);
+
+                database.getReference().child("Users").child(FirebaseAuth.getInstance().getUid())
+                        .updateChildren(obj);
+                Toast.makeText(SettingsActivity.this,"Profile Updated",Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+        database.getReference().child("Users").child(FirebaseAuth.getInstance().getUid())
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                       Users users=snapshot.getValue(Users.class);
+                        Users users = snapshot.getValue(Users.class);
                         Picasso.get()
                                 .load(users.getProfilePic())
                                 .placeholder(R.drawable.userprofileimg)
                                 .into(binding.profileImage);
+
+                        binding.etStatus.setText(users.getStatus());
+                        binding.etUsersName.setText(users.getUserName());
                     }
+
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
@@ -73,11 +95,11 @@ public class SettingsActivity extends AppCompatActivity {
         binding.plus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent=new Intent();
+                Intent intent = new Intent();
                 intent.setAction(Intent.ACTION_GET_CONTENT);
                 intent.setType("image/*");
 
-                startActivityForResult(intent,33);
+                startActivityForResult(intent, 33);
             }
         });
 
@@ -87,29 +109,29 @@ public class SettingsActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (data.getData()!=null)
-        {
-            Uri sFile=data.getData();
+        if (data.getData() != null) {
+            Uri sFile = data.getData();
             binding.profileImage.setImageURI(sFile);
 
-            final StorageReference reference=storage.getReference().child("profile_pictures")
+            final StorageReference reference = storage.getReference().child("profile_pictures")
                     .child(FirebaseAuth.getInstance().getUid());
 
             reference.putFile(sFile).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 
-                  reference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                      @Override
-                      public void onSuccess(Uri uri) {
+                    reference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
 
-                          database.getReference().child("Users").child(FirebaseAuth.getInstance().getUid())
-                                  .child("profilepic").setValue(uri.toString());
+                            database.getReference().child("Users").child(FirebaseAuth.getInstance().getUid())
+                                    .child("profilepic").setValue(uri.toString());
 
-                          Toast.makeText(SettingsActivity.this,"Profile Pic Updated",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SettingsActivity.this, "Profile Pic Updated", Toast.LENGTH_SHORT).show();
 
-                      }
-                  });
+                        }
+                    });
+
                 }
             });
         }
